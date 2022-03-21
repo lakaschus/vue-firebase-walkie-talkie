@@ -20,7 +20,6 @@ export default {
   data() {
     return {
       chats: [],
-      test: "test",
     };
   },
   mounted() {
@@ -34,9 +33,7 @@ export default {
   },
   methods: {
     updateChats() {
-      var data = this.getChatRooms()
-      data.then(chats => {this.chats = chats})
-      return data
+      return this.getChatRooms().then(chats => {this.chats = chats})
     },
     async createChatRoom() {
       const newChat = await db.collection("chats").add({
