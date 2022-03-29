@@ -13,8 +13,9 @@
 </template>
 
 <script>
-import { db } from "../firebase";
-import { ref } from "vue";
+import { db } from "../firebase/config";
+import getCollection from "../composables/getCollection";
+import getUser from "../composables/getUser";
 
 export default {
   data() {
@@ -23,18 +24,9 @@ export default {
     };
   },
   mounted() {
-    console.log("mounted");
-    this.updateChats();
-  },
-  firestore() {
-    return {
-      chats: db.collection("chats").where("owner", "==", this.uid),
-    };
+    this.chats = this.getChatRooms()
   },
   methods: {
-    updateChats() {
-      return this.getChatRooms().then(chats => {this.chats = chats})
-    },
     async createChatRoom() {
       const newChat = await db.collection("chats").add({
         createdAt: Date.now(),
@@ -43,24 +35,12 @@ export default {
       });
     },
     getChatRooms() {
-      var user_id = this.uid;
-      return db.collection("chats")
-        .get()
-        .then(function (snapshot) {
-          var chats = [];
-          snapshot.forEach(function (childSnapshot) {
-            var id = childSnapshot.id;
-            var data = childSnapshot.data();
-
-            if (data.owner == user_id) {
-              chats.push({
-                id: id,
-                owner: data.owner,
-              });
-            }
-          });
-          return chats;
-        });
+      const { user } = getUser()
+      const { documents: chats } = getCollection(
+        "chats",
+        ['owner', '==', user.value.uid]
+      )
+      return chats
     },
   },
   props: ["uid"],

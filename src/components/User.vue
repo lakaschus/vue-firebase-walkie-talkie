@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import { auth } from "../firebase";
+import { auth } from "../firebase/config";
 import { ref } from "vue";
 
 export default {
