@@ -34,7 +34,8 @@
 </template>
 
 <script>
-import { auth } from "../firebase/config";
+import { auth } from "../firebase/config"
+import { signInWithEmailAndPassword, createUserWithEmailAndPassword } from "firebase/auth"
 
 
 export default {
@@ -56,9 +57,9 @@ export default {
         this.errorMessage = '';
         try {
           if (this.newUser) {
-            await auth.createUserWithEmailAndPassword(this.email, this.password)
+            await createUserWithEmailAndPassword(auth, this.email, this.password)
           } else {
-            await auth.signInWithEmailAndPassword(this.email, this.password)
+            await signInWithEmailAndPassword(auth, this.email, this.password)
           }
         } catch (error) {
             this.errorMessage = error.message;
