@@ -1,35 +1,34 @@
 <template>
   <aside class="section">
     <h3>Sign in Anonymously</h3>
-    <button class="button" @click="signInAnonymously">Sign In</button>
+    <n-button ghost :color="colors.green[600]" @click="signInAnonymously">Sign In</n-button>
 
     <div v-if="newUser">
       <h3>Sign Up for a New Account</h3>
-      <a href="#" @click="newUser = false">Returning User?</a>
+      <a class="text-blue-600" href="#" @click="newUser = false">Returning User?</a>
     </div>
 
     <div v-else>
       <h3>Sign In with Email</h3>
-      <a href="#" @click="newUser = true">New user?</a>
+      <a class="text-blue-600" href="#" @click="newUser = true">New user?</a>
     </div>
+
 
     <label for="email">Email</label>
     <br />
-    <input v-model="email" placeholder="email" type="email" class="input" />
+    <n-input v-model="email" placeholder="email" type="email" autosize style="min-width: 20%" />
 
     <label for="password">Password</label>
     <br />
-    <input v-model="password" type="password" class="input" />
+    <n-input v-model="password" type="password" autosize style="min-width: 20%"/>
 
     <br />
 
-    <button
-      class="button is-info"
-      :class="{ 'is-loading': loading }"
+    <n-button :color="colors.green[600]"
       @click="signInOrCreateUser()"
     >
       {{ newUser ? "Sign Up" : "Login" }}
-    </button>
+    </n-button>
 
     <p class="has-text-danger" v-if="errorMessage">{{ errorMessage }}</p>
   </aside>
@@ -42,11 +41,14 @@ import {
   createUserWithEmailAndPassword,
   signInAnonymously,
 } from "firebase/auth"
+import colors from "../config/colors"
+import { NButton, NA, NInput } from "naive-ui"
 
 export default {
   data() {
     return {
       auth,
+      colors,
       newUser: false,
       email: "",
       password: "",
@@ -54,7 +56,11 @@ export default {
       loading: false,
     }
   },
-
+  components: {
+    NButton,
+    NA,
+    NInput
+  },
   methods: {
     async signInOrCreateUser() {
       this.loading = true
