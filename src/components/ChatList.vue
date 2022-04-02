@@ -16,6 +16,7 @@
 import { db } from "../firebase/config";
 import getCollection from "../composables/getCollection";
 import getUser from "../composables/getUser";
+import { addDoc, collection } from "@firebase/firestore";
 
 export default {
   data() {
@@ -28,7 +29,8 @@ export default {
   },
   methods: {
     async createChatRoom() {
-      const newChat = await db.collection("chats").add({
+      const colRef = collection(db, 'chats')
+      await addDoc(colRef, {
         createdAt: Date.now(),
         owner: this.uid,
         members: [this.uid],

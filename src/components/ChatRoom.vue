@@ -62,7 +62,17 @@ import { ref } from "vue"
 import getCollection from "../composables/getCollection"
 import getUser from "../composables/getUser"
 import { db } from "../firebase/config"
-import { collection, addDoc, onSnapshot } from "@firebase/firestore"
+import {
+  collection,
+  addDoc,
+  onSnapshot,
+  orderBy,
+  limitToLast,
+  query,
+  doc,
+  setDoc,
+} from "@firebase/firestore"
+import { getDownloadURL, getStorage, ref as storageRef, uploadBytes } from "firebase/storage"
 
 export default {
   components: {
@@ -100,8 +110,9 @@ export default {
         this.$route.params.id,
         "messages"
       )
+      const q = query(messagesRef, orderBy("createdAt"), limitToLast(10))
       const documents = ref(null)
-      onSnapshot(messagesRef, (snapshot) => {
+      onSnapshot(q, (snapshot) => {
         let results = []
         snapshot.docs.forEach((doc) => {
           results.push({ ...doc.data(), id: doc.id })
@@ -116,12 +127,24 @@ export default {
 
       let audioURL = null
 
-      await addDoc(collection(db, "chats", this.$route.params.id, "messages"), {
+      const newDoc = await addDoc(collection(db, "chats", this.$route.params.id, "messages"), {
         text: this.newMessageText,
         sender: uid,
-        createdAt: Date.now(),
-        audioURL,
+        createdAt: Date.now()
       })
+
+      const newDocId = newDoc.id
+      console.log("🚀 ~ file: ChatRoom.vue ~ line 136 ~ addMessage ~ newDocId", newDocId)
+
+      if (this.newAudio) {
+        const storage = getStorage()
+        const audioRef = storageRef(storage, `${this.$route.params.id}/${newDocId}.wav`)
+        await uploadBytes(audioRef, this.newAudio).then((snapshot) => {
+          console.log("Uploaded audio file")
+        })
+        audioURL = await getDownloadURL(audioRef)
+        await setDoc(doc(db, `chats/${this.$route.params.id}/messages`, newDocId), {audioURL}, {merge: true})
+      }
 
       this.loading = false
       this.newAudio = null

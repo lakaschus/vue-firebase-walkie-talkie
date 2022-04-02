@@ -1,7 +1,7 @@
 <template>
   <aside class="section">
     <h3>Sign in Anonymously</h3>
-    <button class="button" @click="auth.signInAnonymously()">Sign In</button>
+    <button class="button" @click="signInAnonymously">Sign In</button>
 
     <div v-if="newUser">
       <h3>Sign Up for a New Account</h3>
@@ -27,7 +27,9 @@
       class="button is-info"
       :class="{ 'is-loading': loading }"
       @click="signInOrCreateUser()"
-    >{{ newUser ? 'Sign Up' : 'Login'}}</button>
+    >
+      {{ newUser ? "Sign Up" : "Login" }}
+    </button>
 
     <p class="has-text-danger" v-if="errorMessage">{{ errorMessage }}</p>
   </aside>
@@ -35,41 +37,50 @@
 
 <script>
 import { auth } from "../firebase/config"
-import { signInWithEmailAndPassword, createUserWithEmailAndPassword } from "firebase/auth"
-
+import {
+  signInWithEmailAndPassword,
+  createUserWithEmailAndPassword,
+  signInAnonymously,
+} from "firebase/auth"
 
 export default {
   data() {
     return {
       auth,
       newUser: false,
-      email: '',
-      password: '',
-      errorMessage: '',
-      loading: false
+      email: "",
+      password: "",
+      errorMessage: "",
+      loading: false,
     }
   },
 
   methods: {
-      async signInOrCreateUser() {
- 
-        this.loading = true;
-        this.errorMessage = '';
-        try {
-          if (this.newUser) {
-            await createUserWithEmailAndPassword(auth, this.email, this.password)
-          } else {
-            await signInWithEmailAndPassword(auth, this.email, this.password)
-          }
-        } catch (error) {
-            this.errorMessage = error.message;
+    async signInOrCreateUser() {
+      this.loading = true
+      this.errorMessage = ""
+      try {
+        if (this.newUser) {
+          await createUserWithEmailAndPassword(auth, this.email, this.password)
+        } else {
+          await signInWithEmailAndPassword(auth, this.email, this.password)
         }
-
-        this.loading = false;
+      } catch (error) {
+        this.errorMessage = error.message
       }
 
+      this.loading = false
+    },
+    signInAnonymously() {
+      signInAnonymously(auth)
+        .then(() => {})
+        .catch((error) => {
+          console.log(
+            "🚀 ~ file: Login.vue ~ line 76 ~ signInAnonymously ~ error",
+            error
+          )
+        })
+    },
   },
 }
-
 </script>
-

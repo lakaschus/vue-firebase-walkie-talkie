@@ -7,13 +7,23 @@
     <br />
 
     <span class="sender">from UID {{ message.sender }}</span>
+    <br />
+    <span class="text-black from-neutral-100 text-xs">{{
+      getDate(message.createdAt)
+    }}</span>
   </div>
 </template>
 
 <script>
 export default {
-    props: ['message', 'owner']
-};
+  props: ["message", "owner"],
+  methods: {
+    getDate(date) {
+      const time = new Date(date * 1000)
+      return time.toUTCString()
+    },
+  },
+}
 </script>
 <style>
 .message {
