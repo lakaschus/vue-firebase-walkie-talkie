@@ -2,7 +2,7 @@
   <main class="section">
     <h3>Welcome to ChatRoom.vue {{ chatId }}</h3>
 
-    <router-link to="/">Back</router-link>
+    <router-link class="text-blue-800" to="/">Back</router-link>
 
     <p>
       Open this link in another browser window to chat
@@ -22,11 +22,11 @@
           </ul>
 
           <hr />
-          <h5>Record Audio</h5>
+          <h5 class="text-blue-600">Record Audio</h5>
 
-          <button v-if="!recorder" @click="record()" class="button is-info">
+          <n-button ghost :color="colors.blue[600]"  v-if="!recorder" @click="record()" class="button is-info">
             Record Voice
-          </button>
+          </n-button>
           <button v-else @click="stop()" class="button is-danger">Stop</button>
 
           <br />
@@ -35,16 +35,15 @@
 
           <hr />
 
-          <input v-model="newMessageText" class="input" />
+          <n-input v-model:value="newMessageText" />
 
-          <button
+          <n-button ghost :color="colors.green[600]"
             :disabled="(!newMessageText && !newAudio) || loading"
-            class="button is-success"
             type="text"
             @click="addMessage(user.uid)"
           >
             Send
-          </button>
+          </n-button>
         </div>
 
         <Login v-else />
@@ -58,6 +57,8 @@ import User from "./User.vue"
 import ChatMessage from "./ChatMessage.vue"
 import Login from "./Login.vue"
 import { ref } from "vue"
+import { NButton, NInput } from "naive-ui"
+import colors from "../config/colors"
 
 import getCollection from "../composables/getCollection"
 import getUser from "../composables/getUser"
@@ -79,6 +80,8 @@ export default {
     User,
     Login,
     ChatMessage,
+    NButton,
+    NInput
   },
   data() {
     return {
@@ -87,6 +90,7 @@ export default {
       messages: [],
       newAudio: null,
       recorder: null,
+      colors
     }
   },
   computed: {

@@ -1,18 +1,22 @@
 <template>
   <div id="app">
     <header>
-      <n-h1>
-        <n-gradient-text
-          :gradient="`linear-gradient(90deg, ${colors.green[600]}, ${colors.blue[600]})`"
-        >
-          Vue Voxer
-        </n-gradient-text>
-      </n-h1>
+      <div class="text-center">
+        <n-h1>
+          <n-gradient-text
+            :gradient="`linear-gradient(90deg, ${colors.green[600]}, ${colors.blue[600]})`"
+          >
+            Vue Voxer
+          </n-gradient-text>
+        </n-h1>
 
-      <p>Realtime Walkie-Talkie Voice Chat</p>
+        <p>Realtime Walkie-Talkie Voice Chat</p>
+      </div>
     </header>
 
+<div class="text-center">
     <router-view></router-view>
+    </div>
   </div>
 </template>
 
@@ -24,22 +28,14 @@ export default {
   name: "App",
   components: {
     NGradientText,
-    NH1
+    NH1,
   },
   data() {
     return {
-      colors: colors
+      colors: colors,
     }
-  }
+  },
 }
 </script>
 
-<style>
-header {
-  text-align: center;
-}
-button,
-input {
-  margin-bottom: 10px;
-}
-</style>
+<style></style>

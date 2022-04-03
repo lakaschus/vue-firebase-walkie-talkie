@@ -1,14 +1,14 @@
 <template>
   <div>
-    <ul>
+    <ul class="list-none -ml-10">
       <li v-for="chat of chats" :key="chat.id">
-        <router-link :to="{ name: 'chat', params: { id: chat.id } }">{{ chat.id }}</router-link>
+        <router-link class="text-blue-600" :to="{ name: 'chat', params: { id: chat.id } }">{{ chat.id }}</router-link>
       </li>
     </ul>
 
-    <button @click="createChatRoom()" class="button">
+    <n-button ghost :color="colors.green[600]"  @click="createChatRoom()">
       Create New Chat Room
-    </button>
+    </n-button>
   </div>
 </template>
 
@@ -17,12 +17,18 @@ import { db } from "../firebase/config";
 import getCollection from "../composables/getCollection";
 import getUser from "../composables/getUser";
 import { addDoc, collection } from "@firebase/firestore";
+import { NButton } from "naive-ui";
+import colors from "../config/colors";
 
 export default {
   data() {
     return {
       chats: [],
+      colors
     };
+  },
+  components: {
+    NButton
   },
   mounted() {
     this.chats = this.getChatRooms()

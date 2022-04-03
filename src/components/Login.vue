@@ -10,18 +10,20 @@
 
     <div v-else>
       <h3>Sign In with Email</h3>
+      <div class="mb-2">
       <a class="text-blue-600" href="#" @click="newUser = true">New user?</a>
+      </div>
     </div>
-
 
     <label for="email">Email</label>
     <br />
-    <n-input v-model="email" placeholder="email" type="email" autosize style="min-width: 20%" />
-
+    <n-input v-model:value="email" placeholder="email" type="email" autosize style="min-width: 20%" />
+    <br>
     <label for="password">Password</label>
     <br />
-    <n-input v-model="password" type="password" autosize style="min-width: 20%"/>
+    <n-input v-model:value="password" type="password" autosize style="min-width: 20%"/>
 
+    <br />
     <br />
 
     <n-button :color="colors.green[600]"
@@ -51,6 +53,7 @@ export default {
       colors,
       newUser: false,
       email: "",
+      test: "",
       password: "",
       errorMessage: "",
       loading: false,
@@ -65,6 +68,7 @@ export default {
     async signInOrCreateUser() {
       this.loading = true
       this.errorMessage = ""
+      console.log("email, password", this.email)
       try {
         if (this.newUser) {
           await createUserWithEmailAndPassword(auth, this.email, this.password)
@@ -90,3 +94,5 @@ export default {
   },
 }
 </script>
+<style>
+</style>
