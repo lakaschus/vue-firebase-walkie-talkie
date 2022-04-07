@@ -32,6 +32,13 @@ export default {
   },
   mounted() {
     this.chats = this.getChatRooms()
+    setTimeout(() => console.log("🚀 ~ file: ChatList.vue ~ line 35 ~ mounted ~ this.chats", this.chats), 1000);
+  },
+  watch: {
+    chats(newChats, oldChats) {
+    console.log("🚀 ~ file: ChatList.vue ~ line 39 ~ chats ~ oldChats", oldChats)
+    console.log("🚀 ~ file: ChatList.vue ~ line 39 ~ chats ~ newChats", newChats)
+    }
   },
   methods: {
     async createChatRoom() {

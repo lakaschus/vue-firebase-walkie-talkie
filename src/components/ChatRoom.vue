@@ -59,9 +59,6 @@ import Login from "./Login.vue"
 import { ref } from "vue"
 import { NButton, NInput } from "naive-ui"
 import colors from "../config/colors"
-
-import getCollection from "../composables/getCollection"
-import getUser from "../composables/getUser"
 import { db } from "../firebase/config"
 import {
   collection,
