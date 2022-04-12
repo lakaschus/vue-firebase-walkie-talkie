@@ -9,9 +9,11 @@ const createDoc = async (colName, json) => {
    */
   const colRef = collection(db, colName)
   try {
-    await addDoc(colRef, json)
+    const docRef = await addDoc(colRef, json)
+    return docRef
   } catch (err) {
     console.log("something went wrong: ", err)
+    return err
   }
 }
 

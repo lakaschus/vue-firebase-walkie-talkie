@@ -1,19 +1,13 @@
 import getCollection from '../getCollection'
+import createDoc from '../createDoc'
 import { assert, expect, test } from 'vitest'
 import { nextTick } from 'vue'
-
-function resolveAfter2Seconds(x) {
-    return new Promise(resolve => {
-      setTimeout(() => {
-        resolve(x);
-      }, 2000);
-    });
-  }
+import { resolveAfterNMilliSeconds } from '@/utils/timeUtils/timeoutPromise'
 
 test('getCollection', async () => { 
     const {documents: chats} = getCollection("chats",
     ['owner', '==', 'niFeEAAtXabKlDlkWvCRTGUj6qi2'])
-    await resolveAfter2Seconds(10)
-    console.log("chats", chats)
+    await resolveAfterNMilliSeconds(10)
+    // console.log("chats", chats)
     expect("test").toBe("test")
 })

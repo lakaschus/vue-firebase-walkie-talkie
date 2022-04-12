@@ -17,10 +17,8 @@
 </template>
 
 <script>
-import { db } from "../firebase/config"
 import getCollection from "../composables/getCollection"
 import getUser from "../composables/getUser"
-import { addDoc, collection } from "@firebase/firestore"
 import { NButton } from "naive-ui"
 import colors from "../config/colors"
 import createDoc from "../composables/createDoc"
@@ -65,12 +63,6 @@ export default {
         owner: this.uid,
         members: [this.uid],
       })
-      // const colRef = collection(db, 'chats')
-      // await addDoc(colRef, {
-      //   createdAt: Date.now(),
-      //   owner: this.uid,
-      //   members: [this.uid],
-      // });
     },
     getChatRooms() {
       const { user } = getUser()
